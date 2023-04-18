@@ -1,0 +1,80 @@
+nir.balouka
+yoniankri
+
+1) Main differences between the uml_before and the uml_after:
+    (*) At first we did not know which bonuses we will implement and that is why the uml_before doesn't
+        contain most of the bonuses bonuses.
+    (*) At first we thought we could use the Block in order to make the leaves and that is why we thought
+        that the Trees package can contain only one class "Tree". When we started to implement the trees, we
+        discovered that the leaves can not be implemented with Blocks so we made a new Leaf class.
+    (*) When we started to implement, we noticed that in few classes we don't use their constructors so we
+        decided to make them private (Sun, SunHalo, Sky, Night, Cloud and Avatar).
+    (*) At first we did not know how we will make the infinite world, that is why the uml_before does not
+        contain all the functions that do that (createWorld, deleteWorld, deleteObjectInLayer)
+
+
+
+2) Endless world explanation:
+    In each moment in the game, the game world is in width of 3 windowDimensions width. For convenience we
+    will refer to the game world as if it is containing 3 worlds (left, middle and right worlds).
+    When the avatar moves in a certain direction a distance of one world, the world in the opposite side is
+    removed (along with all the object in it) and another new world is made in the same direction the avatar
+    had moved (along with all the object in it). For example the start state of the worlds is ([A][B][C]) and
+    the avatar moves towards world "C", the after a certain distance the worlds state will be: ([B][C][D]).
+
+    In order to make the world continuous (meaning if we go back to a certain position, the world will be
+    identical), we used:
+        * for the terrain: a function that returns for each X position the same terrain height, so when we
+          will rebuild the world in this position the terrain will be identical (in height).
+        * for the trees: functions that randomizes if a certain X position has a tree or not and also the
+          height of the tree, uses the random seed and hashcode - so for the same X position, those function
+          will return the same values and the world would appear identical.
+
+
+3) The way we implemented the "Tree" package:
+   We created two classes in order to make the game trees:
+       * Tree: class that handles the creation of a tree, including it's trunk (using Blocks) and leaves.
+               It also have a function that create few trees in a given range.
+       * Leaf: extends GameObject, representing a single leaf in the game. All the behaviour of a leaf
+               (mostly the movement) are handled there. The reason we made a new class instead of using Block
+               is that all leaves share a behaviour which a Block does not, also in order for the leaf to fall
+               on the ground and stop - we could not use Block because is has infinite mass (that is why we
+               also could not inherit from Block).
+
+
+4) Design dilemmas:
+   We struggled with few decision in the making of the project:
+   (*) should we make the constructors private in the classes we only use the create function (Sun, SunHalo,
+       Sky, Night, Cloud and Avatar)?
+       Finally we decided to indeed make them private because we don't want the user (accidentally or not) to
+       create an instance of those classes, that is why we use the "create" function.
+
+   (*) should we use a factory for the creation of monsters (bonus)? we only made 2 types of monsters.
+       Finally we decided to indeed create a factory for the creation of new monsters, the reason is that if
+       in the future someone would want to add more monsters, it would be very messy to do that in the
+       PepseGameManager, and if it will be inside a specific factory which handles exactly that - it will make
+       it much more easy to add new monsters types.
+
+   (*) how to make the game work faster? we decided to make only the top 2 layers of the terrain able to
+       collide with the other objects in the game, and the other layers are in a different layer which no
+       collision is defined for it.
+
+
+5) Bonuses (MapleStory motif):
+   (*) The avatar is the most famous character in the MapleStory game which is our favorite childhood game:
+       We used "AnimationRenderable" in order to make it more alive.
+   (*) There is an energy counter text on the screen which present the amount of energy tha avatar have at all
+       time. We created a new class "NumericEnergyCounter" which receives the energy Counter and is
+       responsible for updating and presenting the energy text on the screen.
+   (*) There is background music which is the music from the MapleStory game. We used the soundReader to play
+       the music.
+   (*) There is a parachute that opens when the character reaches a certain velocity and slow it down.
+       We noticed that when the character reaches a certain velocity the game engine often does not work fast
+       enough and the character could fall through the ground. In order to fix it, we made a new gameObject
+       that appears when the avatar's velocity is too high and slow it down without making the gravitation
+       look bad. when the avatar stops falling (touches something) the parachute disappear.
+   (*) There are clouds in the sky which the avatar can land on and rest for restoring energy. We implemented
+       a new class which is responsible to handle the Cloud creation and it's movement.
+   (*) There are monsters that walks and jump. We created a new class for a monster type, this class is
+       responsible for thr behaviour and movement of a monster. We also made a factory which is responsible
+       for creating each monster type and randomize the monster type.
