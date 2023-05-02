@@ -1,5 +1,7 @@
 # Maple Story Themed Game
 
+<img align="center" alt="Coding" width="300" src="game_img.PNG">
+
 ##  About this project
 ```bash
 --- watch game running_video.mp4 to see how the game runs ---
