@@ -1,6 +1,6 @@
 # Maple Story Themed Game
 
-<img align="center" alt="Coding" width="300" src="game_img.PNG">
+<img align="center" alt="Coding" src="running_video.gif" height="300">
 
 ##  About this project
 ```bash
